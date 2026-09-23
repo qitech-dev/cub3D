@@ -4,6 +4,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>
+# include "libft.h"
 
 typedef struct s_config
 {
