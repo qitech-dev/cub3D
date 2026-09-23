@@ -16,3 +16,23 @@ static int	is_cub_file(char *filename)
 		return (0);
 	return (1);
 }
+
+int	parse_file(char *filename, t_config *config)
+{
+	int	fd;
+
+	(void)config;
+	if (!is_cub_file(filename))
+	{
+		write(2, "Error\nFile must end with .cub\n", 30);
+		return (1);
+	}
+	fd = open(filename, O_RDONLY);
+	if (fd < 0)
+	{
+		write(2, "Error\nCannot open map\n", 22);
+		return (1);
+	}
+	close(fd);
+	return (0);
+}
