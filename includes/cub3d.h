@@ -21,7 +21,6 @@ typedef struct s_config
 	char	player_dir;
 }	t_config;
 
-void	init_config(t_config *config);
 int		check_args(int argc, char **argv);
 int		parse_file(char *filename, t_config *config);
 
