@@ -6,6 +6,19 @@
 # include <fcntl.h>
 # include "libft.h"
 
+typedef enum e_identifier
+{
+	ID_NO,
+	ID_SO,
+	ID_WE,
+	ID_EA,
+	ID_F,
+	ID_C,
+	ID_MAP,
+	ID_EMPTY,
+	ID_INVALID
+}	t_identifier;
+
 typedef struct s_config
 {
 	char	*no;
