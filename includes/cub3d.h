@@ -35,7 +35,14 @@ typedef struct s_config
 	char	player_dir;
 }	t_config;
 
-int		check_args(int argc, char **argv);
-int		parse_file(char *filename, t_config *config);
+int				check_args(int argc, char **argv);
+int				parse_file(char *filename, t_config *config);
+int				parser_error(char *message);
+int				is_space(char c);
+char			*skip_spaces(char *s);
+int				is_empty_line(char *line);
+int				is_map_char(char c);
+int				is_map_line(char *line);
+t_identifier	parse_identifier(char *line);
 
 #endif

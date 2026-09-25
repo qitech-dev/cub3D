@@ -10,3 +10,23 @@ int	parser_error(char *message)
 	}
 	return (1);
 }
+
+int	is_space(char c)
+{
+	return (c == ' ' || c == '\t');
+}
+
+char	*skip_spaces(char *s)
+{
+	while (*s && is_space(*s))
+		s++;
+	return (s);
+}
+
+int	is_empty_line(char *line)
+{
+	char	*s;
+
+	s = skip_spaces(line);
+	return (*s == '\n' || *s == '\0');
+}
