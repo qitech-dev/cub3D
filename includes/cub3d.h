@@ -44,5 +44,6 @@ int				is_empty_line(char *line);
 int				is_map_char(char c);
 int				is_map_line(char *line);
 t_identifier	parse_identifier(char *line);
+int				parse_texture(char *line, t_config *config, t_identifier id);
 
 #endif
