@@ -19,19 +19,37 @@ static int	is_cub_file(char *filename)
 
 int	parse_file(char *filename, t_config *config)
 {
-	int	fd;
+	int				fd;
+	char			*line;
+	t_identifier	id;
 
-	(void)config;
 	if (!is_cub_file(filename))
-	{
-		write(2, "Error\nFile must end with .cub\n", 30);
-		return (1);
-	}
+		return (parser_error("File must end with .cub"));
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
+		return (parser_error("Cannot open map"));
+	line = get_next_line(fd);
+	while (line)
 	{
-		write(2, "Error\nCannot open map\n", 22);
-		return (1);
+		id = parse_identifier(line);
+		if (id == ID_NO || id == ID_SO
+			|| id == ID_WE || id == ID_EA)
+		{
+			if (parse_texture(line, config, id))
+			{
+				free(line);
+				close(fd);
+				return (1);
+			}
+		}
+		else if (id == ID_INVALID)
+		{
+			free(line);
+			close(fd);
+			return (parser_error("Invalid line"));
+		}
+		free(line);
+		line = get_next_line(fd);
 	}
 	close(fd);
 	return (0);

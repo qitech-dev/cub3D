@@ -1,6 +1,5 @@
 #include "cub3d.h"
 
-
 int	is_map_char(char c)
 {
 	return (
