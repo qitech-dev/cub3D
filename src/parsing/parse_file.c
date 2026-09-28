@@ -42,6 +42,15 @@ int	parse_file(char *filename, t_config *config)
 				return (1);
 			}
 		}
+		else if (id == ID_F || id == ID_C)
+		{
+			if (parse_color(line, config, id))
+			{
+				free(line);
+				close(fd);
+				return (1);
+			}
+		}
 		else if (id == ID_INVALID)
 		{
 			free(line);
