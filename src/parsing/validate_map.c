@@ -16,7 +16,7 @@ static int	map_line_len(char *line)
 	return (len);	
 }
 
-static char	get_map_char(t_config *config, int x, int y)
+static char	get_map_char(t_config *config, int y, int x)
 {
 	int	len;
 
@@ -84,7 +84,7 @@ int	validate_closed_map(t_config *config)
 					|| get_map_char(config, y + 1, x) == ' '
 					|| get_map_char(config, y, x - 1) == ' '
 					|| get_map_char(config, y, x + 1) == ' ')
-					return (parser_error("Map is ot closed"));
+					return (parser_error("Map is not closed"));
 			}
 			x++;
 		}
