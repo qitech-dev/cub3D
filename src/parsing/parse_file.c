@@ -94,5 +94,7 @@ int	parse_file(char *filename, t_config *config)
 	close(fd);
 	if (validate_config(config))
 		return (1);
+	if (validate_player(config))
+		return (1);
 	return (0);
 }

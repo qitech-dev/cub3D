@@ -48,5 +48,6 @@ t_identifier	parse_identifier(char *line);
 int				parse_texture(char *line, t_config *config, t_identifier id);
 int				parse_color(char *line, t_config *config, t_identifier id);
 int				add_map_line(t_config *config, char *line);
+int				validate_player(t_config *config);
 
 #endif
