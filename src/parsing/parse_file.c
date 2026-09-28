@@ -88,6 +88,8 @@ int	parse_file(char *filename, t_config *config)
 			close(fd);
 			return (parser_error("Invalid line"));
 		}
+		free(line);
+		line = get_next_line(fd);
 	}
 	close(fd);
 	return (0);
