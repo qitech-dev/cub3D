@@ -4,7 +4,8 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror
 INCLUDES = -Iincludes -Ilibft
 
-SRC =	src/parsing/parse_file.c \
+SRC =	src/main.c \
+		src/parsing/parse_file.c \
 		src/parsing/parse_identifier.c \
 		src/parsing/parse_texture.c \
 		src/parsing/parse_color.c \
