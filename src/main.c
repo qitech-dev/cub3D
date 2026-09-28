@@ -21,7 +21,6 @@ static void	init_config(t_config *config)
 int	main(int argc, char **argv)
 {
 	t_config	config;
-	int	i;
 
 	init_config(&config);
 	if (argc != 2)
