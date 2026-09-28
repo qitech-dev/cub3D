@@ -61,4 +61,34 @@ int	validate_player(t_config *config)
 	return (0);
 }
 
+static int	is_walkable(char c)
+{
+	return (c == '0' || c == 'N' || c == 'S'
+		|| c == 'E' || c == 'W');
+}
 
+int	validate_closed_map(t_config *config)
+{
+	int	x;
+	int	y;
+
+	y = 0;
+	while (y < config->map_height)
+	{
+		x = 0;
+		while (config->map[y][x])
+		{
+			if (is_walkable(config->map[y][x]))
+			{
+				if (get_map_char(config, y - 1, x) == ' '
+					|| get_map_char(config, y + 1, x) == ' '
+					|| get_map_char(config, y, x - 1) == ' '
+					|| get_map_char(config, y, x + 1) == ' ')
+					return (parser_error("Map is ot closed"));
+			}
+			x++;
+		}
+		y++;
+	}
+	return (0);
+}
