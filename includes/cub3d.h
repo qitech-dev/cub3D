@@ -50,5 +50,6 @@ int				parse_color(char *line, t_config *config, t_identifier id);
 int				add_map_line(t_config *config, char *line);
 int				validate_player(t_config *config);
 int				validate_closed_map(t_config *config);
+void			free_config(t_config *config);
 
 #endif

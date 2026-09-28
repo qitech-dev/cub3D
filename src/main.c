@@ -30,12 +30,10 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	if (parse_file(argv[1], &config) != 0)
-		return (1);
-	i = 0;
-	while (config.map && config.map[i])
 	{
-		printf("[%s]\n", config.map[i]);
-		i++;
+		free_config(&config);
+		return (1);
 	}
+	free_config(&config);
 	return (0);
 }

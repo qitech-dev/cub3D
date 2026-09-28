@@ -11,7 +11,8 @@ SRC =	src/main.c \
 		src/parsing/parse_color.c \
 		src/parsing/parse_map.c \
 		src/parsing/parser_utils.c \
-		src/parsing/validate_map.c
+		src/parsing/validate_map.c \
+		src/parsing/free_config.c
 
 OBJ = $(SRC:.c=.o)
 
