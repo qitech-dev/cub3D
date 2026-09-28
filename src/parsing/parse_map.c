@@ -52,11 +52,23 @@ static char	*copy_map_line(char *line)
 	return (copy);
 }
 
+static int	map_line_width(char *line)
+{
+	int	len;
+
+	len = 0;
+	while (line[len] && line[len] != '\n')
+		len++;
+	return (len);
+}
+
 int	add_map_line(t_config *config, char *line)
 {
 	char	**new_map;
 	int		i;
+	int		width;
 
+	width = map_line_width(line);
 	new_map = malloc(sizeof(char *) * (config->map_height + 2));
 	if (!new_map)
 		return (parser_error("Malloc failed"));
@@ -76,5 +88,7 @@ int	add_map_line(t_config *config, char *line)
 	free(config->map);
 	config->map = new_map;
 	config->map_height++;
+	if (width > config->map_width)
+		config->map_width = width;
 	return (0);
 }
