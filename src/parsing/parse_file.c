@@ -22,6 +22,8 @@ int	parse_file(char *filename, t_config *config)
 	int				fd;
 	char			*line;
 	t_identifier	id;
+	int				map_started;
+	int				map_ended;
 
 	if (!is_cub_file(filename))
 		return (parser_error("File must end with .cub"));
@@ -29,10 +31,39 @@ int	parse_file(char *filename, t_config *config)
 	if (fd < 0)
 		return (parser_error("Cannot open map"));
 	line = get_next_line(fd);
+	map_started = 0;
+	map_ended = 0;
 	while (line)
 	{
 		id = parse_identifier(line);
-		if (id == ID_NO || id == ID_SO
+		if (id == ID_MAP)
+		{
+			if (map_ended)
+			{
+				free(line);
+				close(fd);
+				return (parser_error("Map interrupted by empty line"));
+			}
+			map_started = 1;
+			if (add_map_line(config, line))
+			{
+				free(line);
+				close(fd);
+				return (1);
+			}
+		}
+		else if (id == ID_EMPTY)
+		{
+			if (map_started)
+				map_ended = 1;
+		}
+		else if (map_started)
+		{
+			free(line);
+			close(fd);
+			return (parser_error("Map must be last"));
+		}
+		else if (id == ID_NO || id == ID_SO
 			|| id == ID_WE || id == ID_EA)
 		{
 			if (parse_texture(line, config, id))
@@ -51,23 +82,12 @@ int	parse_file(char *filename, t_config *config)
 				return (1);
 			}
 		}
-		else if (id == ID_MAP)
-		{
-			if (add_map_line(config, line))
-			{
-				free(line);
-				close(fd);
-				return (1);
-			}
-		}
 		else if (id == ID_INVALID)
 		{
 			free(line);
 			close(fd);
 			return (parser_error("Invalid line"));
 		}
-		free(line);
-		line = get_next_line(fd);
 	}
 	close(fd);
 	return (0);
