@@ -16,9 +16,12 @@ static void	init_config(t_config *config)
 	config->player_dir = 0;
 }
 
+#include <stdio.h>
+
 int	main(int argc, char **argv)
 {
 	t_config	config;
+	int	i;
 
 	init_config(&config);
 	if (argc != 2)
@@ -28,5 +31,11 @@ int	main(int argc, char **argv)
 	}
 	if (parse_file(argv[1], &config) != 0)
 		return (1);
+	i = 0;
+	while (config.map && config.map[i])
+	{
+		printf("[%s]\n", config.map[i]);
+		i++;
+	}
 	return (0);
 }

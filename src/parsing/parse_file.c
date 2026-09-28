@@ -51,6 +51,15 @@ int	parse_file(char *filename, t_config *config)
 				return (1);
 			}
 		}
+		else if (id == ID_MAP)
+		{
+			if (add_map_line(config, line))
+			{
+				free(line);
+				close(fd);
+				return (1);
+			}
+		}
 		else if (id == ID_INVALID)
 		{
 			free(line);
