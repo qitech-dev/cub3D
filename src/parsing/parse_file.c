@@ -92,5 +92,7 @@ int	parse_file(char *filename, t_config *config)
 		line = get_next_line(fd);
 	}
 	close(fd);
+	if (validate_config(config))
+		return (1);
 	return (0);
 }

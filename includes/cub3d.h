@@ -43,6 +43,7 @@ char			*skip_spaces(char *s);
 int				is_empty_line(char *line);
 int				is_map_char(char c);
 int				is_map_line(char *line);
+int				validate_config(t_config *config);
 t_identifier	parse_identifier(char *line);
 int				parse_texture(char *line, t_config *config, t_identifier id);
 int				parse_color(char *line, t_config *config, t_identifier id);
