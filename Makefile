@@ -4,12 +4,12 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror
 INCLUDES = -Iincludes -Ilibft
 
-SRC =	src/main.c \
-		src/parsing/parse_file.c \
+SRC =	src/parsing/parse_file.c \
 		src/parsing/parse_identifier.c \
+		src/parsing/parse_texture.c \
+		src/parsing/parse_color.c \
 		src/parsing/parse_map.c \
-		src/parsing/parser_utils.c \
-		src/parsing/parse_texture.c
+		src/parsing/parser_utils.c
 
 OBJ = $(SRC:.c=.o)
 
