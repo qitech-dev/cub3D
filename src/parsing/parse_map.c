@@ -2,15 +2,8 @@
 
 int	is_map_char(char c)
 {
-	return (
-		c == '0'
-		|| c == '1'
-		|| c == 'N'
-		|| c == 'S'
-		|| c == 'E'
-		|| c == 'W'
-		|| c == ' '
-	);
+	return (c == '0' || c == '1' || c == 'N' || c == 'S'
+		|| c == 'E' || c == 'W' || c == ' ');
 }
 
 int	is_map_line(char *line)
@@ -52,39 +45,35 @@ static char	*copy_map_line(char *line)
 	return (copy);
 }
 
-static int	map_line_width(char *line)
+static void	copy_map_rows(char **dst, char **src, int height)
 {
-	int	len;
+	int	i;
 
-	len = 0;
-	while (line[len] && line[len] != '\n')
-		len++;
-	return (len);
+	i = 0;
+	while (i < height)
+	{
+		dst[i] = src[i];
+		i++;
+	}
 }
 
 int	add_map_line(t_config *config, char *line)
 {
 	char	**new_map;
-	int		i;
 	int		width;
 
-	width = map_line_width(line);
 	new_map = malloc(sizeof(char *) * (config->map_height + 2));
 	if (!new_map)
 		return (parser_error("Malloc failed"));
-	i = 0;
-	while (i < config->map_height)
-	{
-		new_map[i] = config->map[i];
-		i++;
-	}
-	new_map[i] = copy_map_line(line);
-	if (!new_map[i])
+	copy_map_rows(new_map, config->map, config->map_height);
+	new_map[config->map_height] = copy_map_line(line);
+	if (!new_map[config->map_height])
 	{
 		free(new_map);
 		return (parser_error("Malloc failed"));
 	}
-	new_map[i + 1] = NULL;
+	new_map[config->map_height + 1] = NULL;
+	width = ft_strlen(new_map[config->map_height]);
 	free(config->map);
 	config->map = new_map;
 	config->map_height++;

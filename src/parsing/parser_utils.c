@@ -33,11 +33,9 @@ int	is_empty_line(char *line)
 
 int	validate_config(t_config *config)
 {
-	if (!config->no || !config->so
-		|| !config->we || !config->ea)
+	if (!config->no || !config->so || !config->we || !config->ea)
 		return (parser_error("Missing texture"));
-	if (config->floor_color == -1
-		|| config->ceiling_color == -1)
+	if (config->floor_color == -1 || config->ceiling_color == -1)
 		return (parser_error("Missing color"));
 	if (!config->map || config->map_height == 0)
 		return (parser_error("Missing map"));

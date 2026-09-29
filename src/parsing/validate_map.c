@@ -1,70 +1,64 @@
 #include "cub3d.h"
 
-static int	is_player(char c)
-{
-	return (c == 'N' || c == 'S'
-		|| c == 'E' || c == 'W');
-}
-
-static int	map_line_len(char *line)
-{
-	int	len;
-
-	len = 0;
-	while (line[len])
-		len++;
-	return (len);	
-}
-
 static char	get_map_char(t_config *config, int y, int x)
 {
-	int	len;
-
-	if (y < 0 || y >= config->map_height)
+	if (y < 0 || y >= config->map_height || x < 0)
 		return (' ');
-	if (x < 0)
-		return (' ');
-	len = map_line_len(config->map[y]);
-	if (x >= len)
+	if (x >= (int)ft_strlen(config->map[y]))
 		return (' ');
 	return (config->map[y][x]);
+}
+
+static int	set_player(t_config *config, int x, int y)
+{
+	char	c;
+
+	c = config->map[y][x];
+	if (c != 'N' && c != 'S' && c != 'E' && c != 'W')
+		return (0);
+	if (config->player_dir)
+		return (parser_error("Multiple players"));
+	config->player_x = x;
+	config->player_y = y;
+	config->player_dir = c;
+	return (0);
 }
 
 int	validate_player(t_config *config)
 {
 	int	x;
 	int	y;
-	int	count;
 
 	y = 0;
-	count = 0;
 	while (config->map[y])
 	{
 		x = 0;
 		while (config->map[y][x])
 		{
-			if (is_player(config->map[y][x]))
-			{
-				count++;
-				config->player_x = x;
-				config->player_y = y;
-				config->player_dir = config->map[y][x];
-			}
+			if (set_player(config, x, y))
+				return (1);
 			x++;
 		}
 		y++;
 	}
-	if (count == 0)
+	if (!config->player_dir)
 		return (parser_error("Missing player"));
-	if (count > 1)
-		return (parser_error("Multiple players"));
 	return (0);
 }
 
-static int	is_walkable(char c)
+static int	cell_is_open(t_config *config, int y, int x)
 {
-	return (c == '0' || c == 'N' || c == 'S'
-		|| c == 'E' || c == 'W');
+	char	c;
+
+	c = config->map[y][x];
+	if (c != '0' && c != 'N' && c != 'S' && c != 'E' && c != 'W')
+		return (0);
+	if (get_map_char(config, y - 1, x) == ' '
+		|| get_map_char(config, y + 1, x) == ' '
+		|| get_map_char(config, y, x - 1) == ' '
+		|| get_map_char(config, y, x + 1) == ' ')
+		return (1);
+	return (0);
 }
 
 int	validate_closed_map(t_config *config)
@@ -78,14 +72,8 @@ int	validate_closed_map(t_config *config)
 		x = 0;
 		while (config->map[y][x])
 		{
-			if (is_walkable(config->map[y][x]))
-			{
-				if (get_map_char(config, y - 1, x) == ' '
-					|| get_map_char(config, y + 1, x) == ' '
-					|| get_map_char(config, y, x - 1) == ' '
-					|| get_map_char(config, y, x + 1) == ' ')
-					return (parser_error("Map is not closed"));
-			}
+			if (cell_is_open(config, y, x))
+				return (parser_error("Map is not closed"));
 			x++;
 		}
 		y++;

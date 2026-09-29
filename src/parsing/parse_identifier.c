@@ -2,19 +2,12 @@
 
 static int	match_two(char *s, char a, char b)
 {
-	return (
-		s[0] == a
-		&& s[1] == b
-		&& is_space(s[2])
-	);
+	return (s[0] == a && s[1] == b && is_space(s[2]));
 }
 
 static int	match_one(char *s, char a)
 {
-	return (
-		s[0] == a
-		&& is_space(s[1])
-	);
+	return (s[0] == a && is_space(s[1]));
 }
 
 t_identifier	parse_identifier(char *line)

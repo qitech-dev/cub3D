@@ -4,101 +4,83 @@ static int	is_cub_file(char *filename)
 {
 	int	len;
 
-	len = 0;
-	while (filename[len])
-		len++;
+	len = ft_strlen(filename);
 	if (len < 5)
 		return (0);
-	if (filename[len - 4] != '.'
-		|| filename[len - 3] != 'c'
-		|| filename[len - 2] != 'u'
-		|| filename[len - 1] != 'b')
+	if (filename[len - 4] != '.' || filename[len - 3] != 'c'
+		|| filename[len - 2] != 'u' || filename[len - 1] != 'b')
 		return (0);
 	return (1);
 }
 
+static int	handle_map(t_config *config, char *line, int *state)
+{
+	if (state[1])
+		return (parser_error("Map interrupted by empty line"));
+	state[0] = 1;
+	return (add_map_line(config, line));
+}
+
+static int	handle_line(t_config *config, char *line, int *state)
+{
+	t_identifier	id;
+
+	id = parse_identifier(line);
+	if (id == ID_MAP)
+		return (handle_map(config, line, state));
+	if (id == ID_EMPTY)
+	{
+		if (state[0])
+			state[1] = 1;
+		return (0);
+	}
+	if (state[0])
+		return (parser_error("Map must be last"));
+	if (id == ID_NO || id == ID_SO || id == ID_WE || id == ID_EA)
+		return (parse_texture(line, config, id));
+	if (id == ID_F || id == ID_C)
+		return (parse_color(line, config, id));
+	return (parser_error("Invalid line"));
+}
+
+static int	read_file(int fd, t_config *config)
+{
+	char	*line;
+	int		state[2];
+
+	state[0] = 0;
+	state[1] = 0;
+	line = get_next_line(fd);
+	while (line)
+	{
+		if (handle_line(config, line, state))
+		{
+			free(line);
+			return (1);
+		}
+		free(line);
+		line = get_next_line(fd);
+	}
+	return (0);
+}
+
 int	parse_file(char *filename, t_config *config)
 {
-	int				fd;
-	char			*line;
-	t_identifier	id;
-	int				map_started;
-	int				map_ended;
+	int	fd;
 
 	if (!is_cub_file(filename))
 		return (parser_error("File must end with .cub"));
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
 		return (parser_error("Cannot open map"));
-	line = get_next_line(fd);
-	map_started = 0;
-	map_ended = 0;
-	while (line)
+	if (read_file(fd, config))
 	{
-		id = parse_identifier(line);
-		if (id == ID_MAP)
-		{
-			if (map_ended)
-			{
-				free(line);
-				close(fd);
-				return (parser_error("Map interrupted by empty line"));
-			}
-			map_started = 1;
-			if (add_map_line(config, line))
-			{
-				free(line);
-				close(fd);
-				return (1);
-			}
-		}
-		else if (id == ID_EMPTY)
-		{
-			if (map_started)
-				map_ended = 1;
-		}
-		else if (map_started)
-		{
-			free(line);
-			close(fd);
-			return (parser_error("Map must be last"));
-		}
-		else if (id == ID_NO || id == ID_SO
-			|| id == ID_WE || id == ID_EA)
-		{
-			if (parse_texture(line, config, id))
-			{
-				free(line);
-				close(fd);
-				return (1);
-			}
-		}
-		else if (id == ID_F || id == ID_C)
-		{
-			if (parse_color(line, config, id))
-			{
-				free(line);
-				close(fd);
-				return (1);
-			}
-		}
-		else if (id == ID_INVALID)
-		{
-			free(line);
-			close(fd);
-			return (parser_error("Invalid line"));
-		}
-		free(line);
-		line = get_next_line(fd);
+		close(fd);
+		return (1);
 	}
 	close(fd);
-	if (validate_config(config))
-		return (1);
-	if (validate_textures(config))
-		return (1);
-	if (validate_player(config))
-		return (1);
-	if (validate_closed_map(config))
+	if (validate_config(config) || validate_textures(config)
+		|| validate_player(config) || validate_closed_map(config))
 		return (1);
 	return (0);
 }
