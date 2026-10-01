@@ -16,23 +16,55 @@ void	init_config(t_config *config)
 	config->player_dir = 0;
 }
 
-#include <stdio.h>
+void	clear_image(t_game *game)
+{
+	int	x;
+	int	y;
+
+	y = 0;
+	while (y < HEIGHT)
+	{
+		x = 0;
+		while (x < WIDTH)
+		{
+			put_pixel(x, y, 0, game);
+			x++;
+		}
+		y++;
+	}
+}
+
+int	draw_loop(t_game *game)
+{
+	rotate_player(&game->player);
+	move_player(&game->player);
+	clear_image(game);
+	cast_all_rays(game);
+	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
+	return (0);
+}
 
 int	main(int argc, char **argv)
 {
-	t_config	config;
+	t_game	game;
 
-	init_config(&config);
+	init_config(&game.config);
 	if (argc != 2)
 	{
 		write(2, "Error\nInvalid number of arguments\n", 34);
+		free_config(&game.config);
 		return (1);
 	}
-	if (parse_file(argv[1], &config) != 0)
+	if (parse_file(argv[1], &game.config))
 	{
-		free_config(&config);
+		free_config(&game.config);
 		return (1);
 	}
-	free_config(&config);
+	init_game(&game);
+	mlx_hook(game.win, 2, 1L << 0, key_press, &game);
+	mlx_hook(game.win, 3, 1L << 1, key_release, &game);
+	mlx_hook(game.win, 17, 0, close_game, &game);
+	mlx_loop_hook(game.mlx, draw_loop, &game);
+	mlx_loop(game.mlx);
 	return (0);
 }
