@@ -1,6 +1,6 @@
 #include "cub3d.h"
 
-static void	init_config(t_config *config)
+void	init_config(t_config *config)
 {
 	config->no = NULL;
 	config->so = NULL;
