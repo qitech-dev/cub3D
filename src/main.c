@@ -27,7 +27,10 @@ void	clear_image(t_game *game)
 		x = 0;
 		while (x < WIDTH)
 		{
-			put_pixel(x, y, 0, game);
+			if (y < HEIGHT / 2)
+				put_pixel(x, y, game->config.ceiling_color, game);
+			else
+				put_pixel(x, y, game->config.floor_color, game);
 			x++;
 		}
 		y++;
