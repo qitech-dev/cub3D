@@ -30,6 +30,7 @@ int	close_game(t_game *game)
 		free(game->mlx);
 		game->mlx = NULL;
 	}
+	free_config(&game->config);
 	exit(0);
 	return (0);
 }

@@ -50,7 +50,12 @@ static bool	touch(float px, float py, t_game *game)
 
 	x = px / BLOCK;
 	y = py / BLOCK;
-	if (game->config.map[y][x] == '1')
+	if (y < 0 || y >= game->config.map_height)
+		return (true);
+	if (x < 0 || x >= (int)ft_strlen(game->config.map[y]))
+		return (true);
+	if (game->config.map[y][x] == '1'
+		|| game->config.map[x][y] == ' ')
 		return (true);
 	return (false);
 }
