@@ -34,6 +34,7 @@
 # include <stdbool.h>
 # include <stdio.h>
 # include "libft.h"
+# include <math.h>
 
 typedef enum e_identifier
 {

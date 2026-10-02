@@ -1,7 +1,9 @@
 NAME = cub3D
 
 CC = cc
+
 CFLAGS = -Wall -Wextra -Werror
+
 INCLUDES = -Iincludes -Ilibft -Iincludes/minilibx-linux
 
 SRC =	src/main.c \
@@ -30,7 +32,8 @@ LIBFT = libft/libft.a
 
 MLX_DIR = includes/minilibx-linux
 MLX = $(MLX_DIR)/libmlx.a
-MLX_FLAGS = -L$(MLX_DIR) -lmlx -lxet -lx11 -lm -lz
+
+MLX_FLAGS = -L$(MLX_DIR) -lmlx -lXext -lX11 -lm -lz
 
 all: $(NAME)
 
@@ -40,7 +43,7 @@ $(NAME): $(LIBFT) $(MLX) $(OBJ)
 $(LIBFT):
 	$(MAKE) -C libft
 
-$(MLX)
+$(MLX):
 	$(MAKE) -C $(MLX_DIR)
 
 %.o: %.c
