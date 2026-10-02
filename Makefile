@@ -2,7 +2,7 @@ NAME = cub3D
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-INCLUDES = -Iincludes -Ilibft
+INCLUDES = -Iincludes -Ilibft -Iincludes/minilibx-linux
 
 SRC =	src/main.c \
 		src/parsing/parse_file.c \
@@ -14,18 +14,34 @@ SRC =	src/main.c \
 		src/parsing/validate_map.c \
 		src/parsing/free_config.c \
 		src/parsing/validate_texture.c \
+		src/init/init_game.c \
+		src/init/init_player.c \
+		src/input/key_press.c \
+		src/input/key_release.c \
+		src/input/move_player.c \
+		src/input/rotate_player.c \
+		src/rendering/put_pixel.c \
+		src/rendering/raycasting.c \
+		src/cleanup/close_game.c
 
 OBJ = $(SRC:.c=.o)
 
 LIBFT = libft/libft.a
 
+MLX_DIR = includes/minilibx-linux
+MLX = $(MLX_DIR)/libmlx.a
+MLX_FLAGS = -L$(MLX_DIR) -lmlx -lxet -lx11 -lm -lz
+
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -o $(NAME)
+$(NAME): $(LIBFT) $(MLX) $(OBJ)
+	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) $(MLX_FLAGS) -o $(NAME)
 
 $(LIBFT):
 	$(MAKE) -C libft
+
+$(MLX)
+	$(MAKE) -C $(MLX_DIR)
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
@@ -33,6 +49,7 @@ $(LIBFT):
 clean:
 	rm -f $(OBJ)
 	$(MAKE) -C libft clean
+	$(MAKE) -C $(MLX_DIR) clean
 
 fclean: clean
 	rm -f $(NAME)
