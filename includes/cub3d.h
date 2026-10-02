@@ -138,7 +138,7 @@ void	cast_all_rays(t_game *game);
 
 /*init*/
 
-void	init_player(t_player *player);
+void	init_player(t_game *game);
 void	init_game(t_game *game);
 
 /*rendering*/
