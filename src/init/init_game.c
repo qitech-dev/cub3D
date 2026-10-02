@@ -29,9 +29,9 @@ static void	init_error(t_game *game, char *message)
 	write(2, message, ft_strlen(message));
 	write(2, "\n", 1);
 	if (game->img)
-		mlx_destroy_image(game->img);
+		mlx_destroy_image(game->mlx, game->img);
 	if (game->win)
-		mlx_destroy_window(game->win);
+		mlx_destroy_window(game->mlx, game->win);
 	if (game->mlx)
 	{
 		mlx_destroy_display(game->mlx);
@@ -49,7 +49,7 @@ void	init_game(t_game *game)
 	if (!game->mlx)
 		init_error(game, "Failed to initialize MiniLibx");
 	game->win = mlx_new_window(game->mlx, WIDTH, HEIGHT, "cub3D");
-	if (!game->win);
+	if (!game->win)
 		init_error(game, "Failed to create a window");
 	game->img = mlx_new_image(game->mlx, WIDTH, HEIGHT);
 	if (!game->img)
