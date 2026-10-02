@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "cub3d.h"
 
 /*
 ** 根据 x 和 y 的差值计算直线距离。
@@ -50,7 +50,7 @@ static bool	touch(float px, float py, t_game *game)
 
 	x = px / BLOCK;
 	y = py / BLOCK;
-	if (game->map[y][x] == '1')
+	if (game->config.map[y][x] == '1')
 		return (true);
 	return (false);
 }
