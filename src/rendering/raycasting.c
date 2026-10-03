@@ -55,7 +55,7 @@ static bool	touch(float px, float py, t_game *game)
 	if (x < 0 || x >= (int)ft_strlen(game->config.map[y]))
 		return (true);
 	if (game->config.map[y][x] == '1'
-		|| game->config.map[x][y] == ' ')
+		|| game->config.map[y][x] == ' ')
 		return (true);
 	return (false);
 }
