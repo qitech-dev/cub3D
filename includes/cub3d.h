@@ -78,6 +78,25 @@ typedef struct s_player
 	bool	right_rotate;
 }	t_player;
 
+typedef struct s_texture
+{
+	void	*img;
+	char	*data;
+	int		width;
+	int		height;
+	int		bpp;
+	int		line_len;
+	int		endian;
+}	t_texture;
+
+typedef struct s_textures
+{
+	t_texture	no;
+	t_texture	so;
+	t_texture	we;
+	t_texture	ea;
+}	t_textures;
+
 typedef struct s_game
 {
 	void		*mlx;
@@ -89,6 +108,7 @@ typedef struct s_game
 	int			endian;
 	t_player	player;
 	t_config	config;
+	t_textures	textures;
 }	t_game;
 
 /* initialization */
