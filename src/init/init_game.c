@@ -48,6 +48,8 @@ void	init_game(t_game *game)
 	game->mlx = mlx_init();
 	if (!game->mlx)
 		init_error(game, "Failed to initialize MiniLibx");
+	if (load_textures(game))
+		init_error(game, "Failed to load textures");
 	game->win = mlx_new_window(game->mlx, WIDTH, HEIGHT, "cub3D");
 	if (!game->win)
 		init_error(game, "Failed to create a window");

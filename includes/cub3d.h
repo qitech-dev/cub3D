@@ -178,4 +178,8 @@ void	rotate_player(t_player *player);
 
 int		close_game(t_game *game);
 
+/*load texures*/
+
+int	load_textures(t_game *game);
+
 #endif
