@@ -23,11 +23,38 @@ static void	init_mlx_values(t_game *game)
 	game->endian = 0;
 }
 
+static void	init_texture(t_texture *tex)
+{
+	tex->img = NULL;
+	tex->data = NULL;
+	tex->width = 0;
+	tex->height = 0;
+	tex->bpp = 0;
+	tex->line_len = 0;
+	tex->endian = 0;
+}
+
+static void	init_texture_values(t_game *game)
+{
+	init_texture(&game->textures.no);
+	init_texture(&game->textures.so);
+	init_texture(&game->textures.we);
+	init_texture(&game->textures.ea);
+}
+
 static void	init_error(t_game *game, char *message)
 {
 	write(2, "Error\n", 6);
 	write(2, message, ft_strlen(message));
 	write(2, "\n", 1);
+	if (game->textures.no.img)
+		mlx_destroy_image(game->mlx, game->textures.no.img);
+	if (game->textures.so.img)
+		mlx_destroy_image(game->mlx, game->textures.so.img);
+	if (game->textures.we.img)
+		mlx_destroy_image(game->mlx, game->textures.we.img);
+	if (game->textures.ea.img)
+		mlx_destroy_image(game->mlx, game->textures.ea.img);
 	if (game->img)
 		mlx_destroy_image(game->mlx, game->img);
 	if (game->win)
@@ -44,6 +71,7 @@ static void	init_error(t_game *game, char *message)
 void	init_game(t_game *game)
 {
 	init_mlx_values(game);
+	init_texture_values(game);
 	init_player(game);
 	game->mlx = mlx_init();
 	if (!game->mlx)
