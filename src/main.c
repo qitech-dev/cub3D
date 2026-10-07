@@ -64,11 +64,6 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	init_game(&game);
-	if (load_textures(&game))
-	{
-		write(2, "Error\nFailed to load textures\n", 30);
-		close_game(&game);
-	}
 	mlx_hook(game.win, 2, 1L << 0, key_press, &game);
 	mlx_hook(game.win, 3, 1L << 1, key_release, &game);
 	mlx_hook(game.win, 17, 0, close_game, &game);

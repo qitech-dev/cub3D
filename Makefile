@@ -24,6 +24,9 @@ SRC =	src/main.c \
 		src/input/rotate_player.c \
 		src/rendering/put_pixel.c \
 		src/rendering/raycasting.c \
+		src/rendering/draw_wall.c \
+		src/texture/get_texture.c \
+		src/texture/load_texture.c \
 		src/cleanup/close_game.c
 
 OBJ = $(SRC:.c=.o)
