@@ -14,6 +14,14 @@
 
 int	close_game(t_game *game)
 {
+	if (game->textures.no.img)
+		mlx_destroy_image(game->mlx, game->textures.no.img);
+	if (game->textures.so.img)
+		mlx_destroy_image(game->mlx, game->textures.so.img);
+	if (game->textures.we.img)
+		mlx_destroy_image(game->mlx, game->textures.we.img);
+	if (game->textures.ea.img)
+		mlx_destroy_image(game->mlx, game->textures.ea.img);
 	if (game->img)
 	{
 		mlx_destroy_image(game->mlx, game->img);
