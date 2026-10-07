@@ -186,7 +186,7 @@ int			load_textures(t_game *game);
 t_texture	*get_hit_texture(t_game *game,
 				float ray_x, float ray_y, float prev_x, float prev_y);
 int			get_texture_x(t_texture *tex,
-				float ray_x, float ray_y, float prev_x, float prev_y);
+				float ray_x, float ray_y, float prev_x);
 int			get_texture_pixel(t_texture *tex, int x, int y);
 void		draw_wall(t_game *game, t_texture *tex,
 				int screen_x, int tex_x, float dist);

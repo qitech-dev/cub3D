@@ -19,12 +19,16 @@ t_texture    *get_hit_texture(t_game *game,
         return (&game->textures.ea);
     }
     if (new_y != old_y)
-        return (&game->textures.no);
-    return (&game->textures.so);
+	{
+		if (ray_y > prev_y)
+			return (&game->textures.no);
+		return (&game->textures.so);
+	}
+	return (&game->textures.no);
 }
 
 int  get_texture_x(t_texture *tex,
-        float ray_x, float ray_y, float prev_x, float prev_y)
+        float ray_x, float ray_y, float prev_x)
 {
     float   offset;
     int     tex_x;

@@ -63,22 +63,33 @@ static bool	touch(float px, float py, t_game *game)
 /* 发射一条射线，找到墙壁并绘制对应的屏幕竖线。*/
 void	draw_line(t_player *player, t_game *game, float start_x, int i)
 {
-	float	ray_x;
-	float	ray_y;
-	float	cos_angle;
-	float	sin_angle;
-	float	dist;
+	float		ray_x;
+	float		ray_y;
+	float		prev_x;
+	float		prev_y;
+	float		cos_angle;
+	float		sin_angle;
+	float		dist;
+	int			tex_x;
+	t_texture	*tex;
 
 	ray_x = player->x;
 	ray_y = player->y;
+	prev_x = ray_x;
+	prev_y = ray_y;
 	cos_angle = cos(start_x);
 	sin_angle = sin(start_x);
 	while (!touch(ray_x, ray_y, game))
 	{
+		prev_x = ray_x;
+		prev_y = ray_y;
 		ray_x += cos_angle;
 		ray_y += sin_angle;
 	}
 	dist = fixed_distance(player->x, player->y, ray_x, ray_y, game);
+	tex = get_hit_texture(game, ray_x, ray_y, prev_x, prev_y);
+	tex_x = get_texture_x(tex, ray_x, ray_y, prev_x);
+	draw_wall(game, tex, i, tex_x, dist);
 }
 
 /*
