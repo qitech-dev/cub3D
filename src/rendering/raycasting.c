@@ -68,9 +68,6 @@ void	draw_line(t_player *player, t_game *game, float start_x, int i)
 	float	cos_angle;
 	float	sin_angle;
 	float	dist;
-	float	height;
-	int		start_y;
-	int		end;
 
 	ray_x = player->x;
 	ray_y = player->y;
@@ -82,14 +79,6 @@ void	draw_line(t_player *player, t_game *game, float start_x, int i)
 		ray_y += sin_angle;
 	}
 	dist = fixed_distance(player->x, player->y, ray_x, ray_y, game);
-	height = (BLOCK / dist) * (WIDTH / 2);
-	start_y = (HEIGHT / 2) - (height / 2);
-	end = start_y + height;
-	while (start_y < end)
-	{
-		put_pixel(i, start_y, 0x00FF00, game);
-		start_y++;
-	}
 }
 
 /*
