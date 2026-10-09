@@ -82,6 +82,8 @@ int	parse_file(char *filename, t_config *config)
 
 	if (!is_cub_file(filename))
 		return (parser_error("File must end with .cub"));
+	if (validate_file_bytes(filename))
+		return (1);
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
 		return (parser_error("Cannot open map"));

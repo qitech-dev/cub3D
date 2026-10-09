@@ -16,6 +16,7 @@ SRC =	src/main.c \
 		src/parsing/validate_map.c \
 		src/parsing/free_config.c \
 		src/parsing/validate_texture.c \
+		src/parsing/validate_file_bytes.c \
 		src/init/init_game.c \
 		src/init/init_player.c \
 		src/input/key_press.c \

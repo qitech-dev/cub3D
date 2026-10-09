@@ -147,6 +147,7 @@ int	validate_config(t_config *config);
 int	validate_textures(t_config *config);
 int	validate_player(t_config *config);
 int	validate_closed_map(t_config *config);
+int validate_file_bytes(char *filename);
 
 /* cleanup */
 
