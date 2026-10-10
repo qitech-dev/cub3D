@@ -20,6 +20,8 @@ void	draw_wall(t_game *game, t_texture *tex, t_wall *wall)
 	int	y;
 	int	tex_y;
 
+	if (!isfinite(wall->dist) || wall->dist <= 0.0f)
+		return ;
 	wall_height = (BLOCK / wall->dist) * (WIDTH / 2);
 	if (wall_height < 1)
 		wall_height = 1;

@@ -40,8 +40,6 @@ static bool	touch(float px, float py, t_game *game)
 void	draw_line(t_player *player, t_game *game, float start_x, int i)
 {
 	t_ray		ray;
-	float		dist;
-	int			tex_x;
 	t_texture	*tex;
 	t_wall		wall;
 
