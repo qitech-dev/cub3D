@@ -12,39 +12,61 @@
 
 #include "cub3d.h"
 
-static void	move_player_tool(t_player *player, float cos_angle, float sin_angle)
+static int	is_walkable(t_game *game, float x, float y)
 {
-	int	speed;
+	int		col;
+	int		row;
+	char	cell;
 
-	speed = 1;
-	if (player->key_up)
-	{
-		player->x += speed * cos_angle;
-		player->y += speed * sin_angle;
-	}
-	if (player->key_down)
-	{
-		player->x -= speed * cos_angle;
-		player->y -= speed * sin_angle;
-	}
-	if (player->key_left)
-	{
-		player->x += speed * sin_angle;
-		player->y -= speed * cos_angle;
-	}
-	if (player->key_right)
-	{
-		player->x -= speed * sin_angle;
-		player->y += speed * cos_angle;
-	}
+	if (x < 0 || y < 0)
+		return (0);
+	col = (int)(x / BLOCK);
+	row = (int)(y / BLOCK);
+	if (row >= game->config.map_height)
+		return (0);
+	if (col >= (int)ft_strlen(game->config.map[row]))
+		return(0);
+	cell = game->config.map[row][col];
+	return (cell == '0' || cell == 'N' || cell == 'S'
+		|| cell == 'E' || cell == 'W');
 }
 
-void	move_player(t_player *player)
+static int	can_move(t_game *game, float x, float y)
 {
+	float	radius;
+
+	radius = 8.0f;
+	return (is_walkable(game, x - radius, y -radius)
+		&& is_walkable(game, x + radius, y - radius)
+		&& is_walkable(game, x - radius, y + radius)
+		&& is_walkable(game, x + radius, y+ radius));
+}
+
+static void	get_move_vector(t_player *player, float *dx, float *dy)
+{
+	float	forward;
+	float	sideways;
 	float	cos_angle;
 	float	sin_angle;
 
+	forward = player->key_up - player->key_down;
+	sideways = player->key_right - player->key_left;
 	cos_angle = cos(player->angle);
 	sin_angle = sin(player->angle);
-	move_player_tool(player, cos_angle, sin_angle);
+	*dx = forward * cos_angle - sideways * sin_angle;
+	*dy = forward * sin_angle + sideways * cos_angle;
+}
+
+void	move_player(t_game *game)
+{
+	t_player	*player;
+	float		dx;
+	float		dy;
+
+	player = &game->player;
+	get_move_vector(player, &dx, &dy);
+	if (dx != 0.0f && can_move(game, player->x + dx, player->y))
+		player->x += dx;
+	if (dy != 0.0f && can_move(game, player->x, player->y + dy))
+		player->y += dy;
 }

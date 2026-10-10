@@ -189,7 +189,7 @@ void			put_pixel(int x, int y, int color, t_game *game);
 
 int				key_press(int keycode, t_game *game);
 int				key_release(int keycode, t_game *game);
-void			move_player(t_player *player);
+void			move_player(t_game *game);
 void			rotate_player(t_player *player);
 
 /*cleanup*/

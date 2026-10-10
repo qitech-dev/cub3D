@@ -52,7 +52,7 @@ void	clear_image(t_game *game)
 int	draw_loop(t_game *game)
 {
 	rotate_player(&game->player);
-	move_player(&game->player);
+	move_player(game);
 	clear_image(game);
 	cast_all_rays(game);
 	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
