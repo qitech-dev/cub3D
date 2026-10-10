@@ -43,6 +43,7 @@ void	draw_line(t_player *player, t_game *game, float start_x, int i)
 	float		dist;
 	int			tex_x;
 	t_texture	*tex;
+	t_wall		wall;
 
 	ray.x = player->x;
 	ray.y = player->y;
@@ -57,10 +58,11 @@ void	draw_line(t_player *player, t_game *game, float start_x, int i)
 		ray.x += ray.cos_angle;
 		ray.y += ray.sin_angle;
 	}
-	dist = fixed_distance(player, ray.x, ray.y);
-	tex = get_hit_texture(game, ray.x, ray.y, ray.prev_x, ray.prev_y);
-	tex_x = get_texture_x(tex, ray.x, ray.y, ray.prev_x);
-	draw_wall(game, tex, i, tex_x, dist);
+	wall.dist = fixed_distance(player, ray.x, ray.y);
+	wall.screen_x = i;
+	tex = get_hit_texture(game, &ray);
+	wall.tex_x = get_texture_x(tex, ray.x, ray.y, ray.prev_x);
+	draw_wall(game, tex, &wall);
 }
 
 void	cast_all_rays(t_game *game)

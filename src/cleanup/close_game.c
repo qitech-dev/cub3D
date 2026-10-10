@@ -12,7 +12,7 @@
 
 #include "cub3d.h"
 
-int	close_game(t_game *game)
+static void	destroy_game_images(t_game *game)
 {
 	if (game->textures.no.img)
 		mlx_destroy_image(game->mlx, game->textures.no.img);
@@ -27,6 +27,10 @@ int	close_game(t_game *game)
 		mlx_destroy_image(game->mlx, game->img);
 		game->img = NULL;
 	}
+}
+
+static void	destroy_game_mlx(t_game *game)
+{
 	if (game->win)
 	{
 		mlx_destroy_window(game->mlx, game->win);
@@ -38,6 +42,12 @@ int	close_game(t_game *game)
 		free(game->mlx);
 		game->mlx = NULL;
 	}
+}
+
+int	close_game(t_game *game)
+{
+	destroy_game_images(game);
+	destroy_game_mlx(game);
 	free_config(&game->config);
 	exit(0);
 	return (0);

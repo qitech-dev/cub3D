@@ -121,20 +121,20 @@ typedef struct s_ray
 	float	sin_angle;
 }	t_ray;
 
-typedef struct s_wall_draw
+typedef struct s_wall
 {
 	int		screen_x;
 	int		tex_x;
 	float	dist;
-}	t_wall_draw;
+}	t_wall;
 
 /* initialization */
 
-void	init_config(t_config *config);
+void			init_config(t_config *config);
 
 /* main parser */
 
-int	parse_file(char *filename, t_config *config);
+int				parse_file(char *filename, t_config *config);
 
 /* identifier */
 
@@ -142,71 +142,67 @@ t_identifier	parse_identifier(char *line);
 
 /* textures / colors */
 
-int	parse_texture(char *line, t_config *config, t_identifier id);
-int	parse_color(char *line, t_config *config, t_identifier id);
+int				parse_texture(char *line, t_config *config, t_identifier id);
+int				parse_color(char *line, t_config *config, t_identifier id);
 
 /* map */
 
-int	is_map_char(char c);
-int	is_map_line(char *line);
-int	add_map_line(t_config *config, char *line);
+int				is_map_char(char c);
+int				is_map_line(char *line);
+int				add_map_line(t_config *config, char *line);
 
 /* parser utils */
 
-int		parser_error(char *message);
-int		is_space(char c);
-char	*skip_spaces(char *s);
-int		is_empty_line(char *line);
+int				parser_error(char *message);
+int				is_space(char c);
+char			*skip_spaces(char *s);
+int				is_empty_line(char *line);
 
 /* validation */
 
-int	validate_config(t_config *config);
-int	validate_textures(t_config *config);
-int	validate_player(t_config *config);
-int	validate_closed_map(t_config *config);
-int validate_file_bytes(char *filename);
+int				validate_config(t_config *config);
+int				validate_textures(t_config *config);
+int				validate_player(t_config *config);
+int				validate_closed_map(t_config *config);
+int				validate_file_bytes(char *filename);
 
 /* cleanup */
 
-void	free_config(t_config *config);
+void			free_config(t_config *config);
 
 /*ray*/
 
-void	put_pixel(int x, int y, int color, t_game *game);
-void	cast_all_rays(t_game *game);
+void			put_pixel(int x, int y, int color, t_game *game);
+void			cast_all_rays(t_game *game);
 
 /*init*/
 
-void	init_player(t_game *game);
-void	init_game(t_game *game);
+void			init_player(t_game *game);
+void			init_game(t_game *game);
 
 /*rendering*/
 
-void	draw_line(t_player *player, t_game *game, float start_x, int i);
-void	put_pixel(int x, int y, int color, t_game *game);
+void			draw_line(t_player *player, t_game *game, float start_x, int i);
+void			put_pixel(int x, int y, int color, t_game *game);
 
 /*input*/
 
-int		key_press(int keycode, t_game *game);
-int		key_release(int keycode, t_game *game);
-void	move_player(t_player *player);
-void	rotate_player(t_player *player);
+int				key_press(int keycode, t_game *game);
+int				key_release(int keycode, t_game *game);
+void			move_player(t_player *player);
+void			rotate_player(t_player *player);
 
 /*cleanup*/
 
-int		close_game(t_game *game);
-
-/*texure*/
+int				close_game(t_game *game);
 
 /* texture */
 
-int			load_textures(t_game *game);
-t_texture	*get_hit_texture(t_game *game,
-				float ray_x, float ray_y, float prev_x, float prev_y);
-int			get_texture_x(t_texture *tex,
-				float ray_x, float ray_y, float prev_x);
-int			get_texture_pixel(t_texture *tex, int x, int y);
-void		draw_wall(t_game *game, t_texture *tex,
-				int screen_x, int tex_x, float dist);
+int				load_textures(t_game *game);
+t_texture		*get_hit_texture(t_game *game, t_ray *ray);
+int				get_texture_x(t_texture *tex,
+					float ray_x, float ray_y, float prev_x);
+int				get_texture_pixel(t_texture *tex, int x, int y);
+void			draw_wall(t_game *game, t_texture *tex, t_wall *wall);
 
 #endif

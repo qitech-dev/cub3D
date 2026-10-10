@@ -12,11 +12,24 @@
 
 #include "cub3d.h"
 
+static int	has_nul_byte(char *buffer, int size)
+{
+	int	i;
+
+	i = 0;
+	while (i < size)
+	{
+		if (buffer[i] == '\0')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 int	validate_file_bytes(char *filename)
 {
 	int		fd;
-	int		bytes_read;
-	int		i;
+	ssize_t	bytes_read;
 	char	buffer[1024];
 
 	fd = open(filename, O_RDONLY);
@@ -25,23 +38,15 @@ int	validate_file_bytes(char *filename)
 	bytes_read = read(fd, buffer, sizeof(buffer));
 	while (bytes_read > 0)
 	{
-		i = 0;
-		while (i < bytes_read)
+		if (has_nul_byte(buffer, bytes_read))
 		{
-			if (buffer[i] == '\0')
-			{
-				close(fd);
-				return (parser_error("NUL byte in scene file"));
-			}
-			i++;
+			close(fd);
+			return (parser_error("NUL byte in scene file"));
 		}
 		bytes_read = read(fd, buffer, sizeof(buffer));
 	}
-	if (bytes_read < 0)
-	{
-		close(fd);
-		return (parser_error("Failed to read file"));
-	}
 	close(fd);
+	if (bytes_read < 0)
+		return (parser_error("Failed to read file"));
 	return (0);
 }

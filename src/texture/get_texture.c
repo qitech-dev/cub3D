@@ -12,27 +12,26 @@
 
 #include "cub3d.h"
 
-t_texture	*get_hit_texture(t_game *game,
-		float ray_x, float ray_y, float prev_x, float prev_y)
+t_texture	*get_hit_texture(t_game *game, t_ray *ray)
 {
 	int	old_x;
 	int	old_y;
 	int	new_x;
 	int	new_y;
 
-	old_x = (int)(prev_x / BLOCK);
-	old_y = (int)(prev_y / BLOCK);
-	new_x = (int)(ray_x / BLOCK);
-	new_y = (int)(ray_y / BLOCK);
+	old_x = (int)(ray->prev_x / BLOCK);
+	old_y = (int)(ray->prev_y / BLOCK);
+	new_x = (int)(ray->x / BLOCK);
+	new_y = (int)(ray->y / BLOCK);
 	if (new_x != old_x)
 	{
-		if (ray_x > prev_x)
+		if (ray->x > ray->prev_x)
 			return (&game->textures.we);
 		return (&game->textures.ea);
 	}
 	if (new_y != old_y)
 	{
-		if (ray_y > prev_y)
+		if (ray->y > ray->prev_y)
 			return (&game->textures.no);
 		return (&game->textures.so);
 	}
