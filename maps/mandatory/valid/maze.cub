@@ -1,0 +1,16 @@
+NO ./maps/mandatory/assets/north.xpm
+SO ./maps/mandatory/assets/south.xpm
+WE ./maps/mandatory/assets/west.xpm
+EA ./maps/mandatory/assets/east.xpm
+F 80,80,80
+C 135,206,235
+
+11111111111
+1N000000001
+10111011101
+10001010001
+11101010111
+10001010001
+10111011101
+10000000001
+11111111111

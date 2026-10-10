@@ -1,11 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   validate_file_bytes.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: qijin <qijin@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/10/09 23:37:28 by qijin             #+#    #+#             */
+/*   Updated: 2026/10/09 23:37:29 by qijin            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
-int validate_file_bytes(char *filename)
+int	validate_file_bytes(char *filename)
 {
-    int		fd;
-    int		bytes_read;
-    int		i;
-    char	buffer[1024];
+	int		fd;
+	int		bytes_read;
+	int		i;
+	char	buffer[1024];
 
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)

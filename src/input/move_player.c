@@ -12,15 +12,11 @@
 
 #include "cub3d.h"
 
-void	move_player(t_player *player)
+static void	move_player_tool(t_player *player, float cos_angle, float sin_angle)
 {
-	int speed;
-	float cos_angle;
-	float sin_angle;
+	int	speed;
 
 	speed = 1;
-	cos_angle = cos(player->angle);
-	sin_angle = sin(player->angle);
 	if (player->key_up)
 	{
 		player->x += speed * cos_angle;
@@ -41,4 +37,14 @@ void	move_player(t_player *player)
 		player->x -= speed * sin_angle;
 		player->y += speed * cos_angle;
 	}
+}
+
+void	move_player(t_player *player)
+{
+	float	cos_angle;
+	float	sin_angle;
+
+	cos_angle = cos(player->angle);
+	sin_angle = sin(player->angle);
+	move_player_tool(player, cos_angle, sin_angle);
 }

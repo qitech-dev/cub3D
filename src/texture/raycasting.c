@@ -12,42 +12,19 @@
 
 #include "cub3d.h"
 
-/*
-** 根据 x 和 y 的差值计算直线距离。
-*/
-static float	distance(float dx, float dy)
+static float	fixed_distance(t_player *player, float ray_x, float ray_y)
 {
-	return (sqrt(dx * dx + dy * dy));
+	return ((ray_x - player->x) * cos(player->angle)
+		+ (ray_y - player->y) * sin(player->angle));
 }
 
-/*
-** 把射线的实际距离投影到玩家正前方，
-** 修正屏幕边缘产生的鱼眼畸变。
-*/
-static float	fixed_distance(float x1, float y1, float x2, float y2,
-		t_game *game)
-{
-	float	delta_x;
-	float	delta_y;
-	float	angle_diff;
-	float	fixed_distance;
-
-	delta_x = x2 - x1;
-	delta_y = y2 - y1;
-	angle_diff = atan2(delta_y, delta_x) - game->player.angle;
-	fixed_distance = distance(delta_x, delta_y) * cos(angle_diff);
-	return (fixed_distance);
-}
-
-/*
-** 检查像素坐标 (px, py) 当前是否位于墙格子中。
-*/
-//注意这个函数可能越界，有必要之后修改
 static bool	touch(float px, float py, t_game *game)
 {
 	int	x;
 	int	y;
 
+	if (px < 0 || py < 0)
+		return (true);
 	x = px / BLOCK;
 	y = py / BLOCK;
 	if (y < 0 || y >= game->config.map_height)
@@ -60,49 +37,38 @@ static bool	touch(float px, float py, t_game *game)
 	return (false);
 }
 
-/* 发射一条射线，找到墙壁并绘制对应的屏幕竖线。*/
 void	draw_line(t_player *player, t_game *game, float start_x, int i)
 {
-	float		ray_x;
-	float		ray_y;
-	float		prev_x;
-	float		prev_y;
-	float		cos_angle;
-	float		sin_angle;
+	t_ray		ray;
 	float		dist;
 	int			tex_x;
 	t_texture	*tex;
 
-	ray_x = player->x;
-	ray_y = player->y;
-	prev_x = ray_x;
-	prev_y = ray_y;
-	cos_angle = cos(start_x);
-	sin_angle = sin(start_x);
-	while (!touch(ray_x, ray_y, game))
+	ray.x = player->x;
+	ray.y = player->y;
+	ray.prev_x = ray.x;
+	ray.prev_y = ray.y;
+	ray.cos_angle = cos(start_x);
+	ray.sin_angle = sin(start_x);
+	while (!touch(ray.x, ray.y, game))
 	{
-		prev_x = ray_x;
-		prev_y = ray_y;
-		ray_x += cos_angle;
-		ray_y += sin_angle;
+		ray.prev_x = ray.x;
+		ray.prev_y = ray.y;
+		ray.x += ray.cos_angle;
+		ray.y += ray.sin_angle;
 	}
-	dist = fixed_distance(player->x, player->y, ray_x, ray_y, game);
-	tex = get_hit_texture(game, ray_x, ray_y, prev_x, prev_y);
-	tex_x = get_texture_x(tex, ray_x, ray_y, prev_x);
+	dist = fixed_distance(player, ray.x, ray.y);
+	tex = get_hit_texture(game, ray.x, ray.y, ray.prev_x, ray.prev_y);
+	tex_x = get_texture_x(tex, ray.x, ray.y, ray.prev_x);
 	draw_wall(game, tex, i, tex_x, dist);
 }
 
-/*
-** 遍历屏幕的全部竖列，每一列发射一条射线。
-**
-** 这是 raycasting.c 唯一向其他文件开放的函数。
-*/
 void	cast_all_rays(t_game *game)
 {
-	float fraction;
-	float ray_angle;
-	int screen_x;
-	t_player *player;
+	float		fraction;
+	float		ray_angle;
+	int			screen_x;
+	t_player	*player;
 
 	player = &game->player;
 	fraction = PI / 3 / WIDTH;

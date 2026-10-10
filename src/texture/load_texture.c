@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   load_texture.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: qijin <qijin@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/10/09 23:36:24 by qijin             #+#    #+#             */
+/*   Updated: 2026/10/09 23:36:26 by qijin            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
-static int  load_one_texture(t_game *game, t_texture *tex, char *path)
+static int	load_one_texture(t_game *game, t_texture *tex, char *path)
 {
 	tex->img = mlx_xpm_file_to_image(game->mlx, path,
-		&tex->width, &tex->height);
+			&tex->width, &tex->height);
 	if (!tex->img)
 		return (1);
 	tex->data = mlx_get_data_addr(tex->img, &tex->bpp,

@@ -19,7 +19,7 @@ void	init_player(t_game *game)
 	if (game->config.player_dir == 'E')
 		game->player.angle = 0;
 	else if (game->config.player_dir == 'S')
-		game->player.angle = PI /2;
+		game->player.angle = PI / 2;
 	else if (game->config.player_dir == 'W')
 		game->player.angle = PI;
 	else if (game->config.player_dir == 'N')

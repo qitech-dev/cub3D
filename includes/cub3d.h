@@ -111,6 +111,23 @@ typedef struct s_game
 	t_textures	textures;
 }	t_game;
 
+typedef struct s_ray
+{
+	float	x;
+	float	y;
+	float	prev_x;
+	float	prev_y;
+	float	cos_angle;
+	float	sin_angle;
+}	t_ray;
+
+typedef struct s_wall_draw
+{
+	int		screen_x;
+	int		tex_x;
+	float	dist;
+}	t_wall_draw;
+
 /* initialization */
 
 void	init_config(t_config *config);
