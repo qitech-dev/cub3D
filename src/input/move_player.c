@@ -25,7 +25,7 @@ static int	is_walkable(t_game *game, float x, float y)
 	if (row >= game->config.map_height)
 		return (0);
 	if (col >= (int)ft_strlen(game->config.map[row]))
-		return(0);
+		return (0);
 	cell = game->config.map[row][col];
 	return (cell == '0' || cell == 'N' || cell == 'S'
 		|| cell == 'E' || cell == 'W');
@@ -36,10 +36,10 @@ static int	can_move(t_game *game, float x, float y)
 	float	radius;
 
 	radius = 8.0f;
-	return (is_walkable(game, x - radius, y -radius)
+	return (is_walkable(game, x - radius, y - radius)
 		&& is_walkable(game, x + radius, y - radius)
 		&& is_walkable(game, x - radius, y + radius)
-		&& is_walkable(game, x + radius, y+ radius));
+		&& is_walkable(game, x + radius, y + radius));
 }
 
 static void	get_move_vector(t_player *player, float *dx, float *dy)
